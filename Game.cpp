@@ -8,17 +8,18 @@ using namespace sf;
 
 /* =================== EASY LEVEL =================== */ 
 
-#define SPEED -3 // Speed of pipes and grounds
+#define SPEED -5 // Speed of pipes and grounds
 #define Sover -10 // Transition for game over
-#define GAP 102 // gap between pipes
-#define DIS 440 // distances between pipes
-#define XPSCORE 380 // X - Position Of Score
+#define GAP 115 // gap between pipes
+#define DIS 1330 // distances between pipes
 
-RenderWindow window(VideoMode(600, 600), "Flappy Bird");
+RenderWindow window(VideoMode(1700, 800), "Flappy Bird", Style::Default);
 Event event;
 
-int modes = 0, IMPOSSIBLE = 0;
+short int modes = 0, diff = 2;
 bool ttp = 0;
+
+
 
 struct Flash
 {
@@ -52,35 +53,33 @@ struct Flash
 
 struct Pipes
 {
-    Sprite PiUp[3];
-    Sprite PiDown[3];
+    Sprite PiUp[5];
+    Sprite PiDown[5];
     Texture Tex[2];
 
     int Rand;
-    bool x, y;
+    bool x, y, a, b;
 
     void Constructor()
     {
-        Tex[0].loadFromFile("pipeup.png");
-        Tex[1].loadFromFile("pipedown.png");
+        Tex[0].loadFromFile("pipeup1.png");
+        Tex[1].loadFromFile("pipedown1.png");
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             GenRan();
             PiUp[i].setTexture(Tex[0]);
-            PiUp[i].setOrigin(PiUp[i].getGlobalBounds().width / 2, PiUp[i].getOrigin().y);
-            PiUp[i].setPosition(700, Rand);
+            PiUp[i].setPosition(1700, Rand);
 
             PiDown[i].setTexture(Tex[1]);
-            PiDown[i].setOrigin(PiDown[i].getGlobalBounds().width / 2, PiDown[i].getOrigin().y);
-            PiDown[i].setPosition(700, Rand - GAP * 5);
+            PiDown[i].setPosition(1700, Rand - GAP * 5);
         }
-        x = 0, y = 0;
+        x = 0, y = 0, a = 0, b = 0;
     }
 
     void GenRan()
     {
-        Rand = 175 + rand() % 296;
+        Rand = 200 + rand() % 296;
     }
     
     void MovePipesOne()
@@ -89,10 +88,10 @@ struct Pipes
         PiUp[0].move(SPEED, 0);
         PiDown[0].move(SPEED, 0);
 
-        if (PiUp[0].getPosition().x <= -69)
+        if (PiUp[0].getPosition().x <= -84)
         {
-            PiUp[0].setPosition(700, Rand);
-            PiDown[0].setPosition(700, Rand - GAP * 5);
+            PiUp[0].setPosition(1700, Rand);
+            PiDown[0].setPosition(1700, Rand - GAP * 5);
         }
     }
 
@@ -109,10 +108,10 @@ struct Pipes
             PiDown[1].move(SPEED, 0);
         }
 
-        if (PiUp[1].getPosition().x <= -69)
+        if (PiUp[1].getPosition().x <= -84)
         {
-            PiUp[1].setPosition(700, Rand);
-            PiDown[1].setPosition(700, Rand - GAP * 5);
+            PiUp[1].setPosition(1700, Rand);
+            PiDown[1].setPosition(1700, Rand - GAP * 5);
         }
     }
 
@@ -129,10 +128,50 @@ struct Pipes
             PiDown[2].move(SPEED, 0);
         }
 
-        if (PiUp[2].getPosition().x <= -69)
+        if (PiUp[2].getPosition().x <= -84)
         {
-            PiUp[2].setPosition(700, Rand);
-            PiDown[2].setPosition(700, Rand - (GAP * 5) + 10);
+            PiUp[2].setPosition(1700, Rand);
+            PiDown[2].setPosition(1700, Rand - (GAP * 5) + 10);
+        }
+    }
+
+    void MovePipesFour()
+    {
+            GenRan();
+
+            if (PiUp[2].getPosition().x <= DIS)
+                a = 1;
+
+            if (a == 1)
+            {
+                PiUp[3].move(SPEED, 0);
+                PiDown[3].move(SPEED, 0);
+            }
+
+            if (PiUp[3].getPosition().x <= -84)
+            {
+                PiUp[3].setPosition(1700, Rand);
+                PiDown[3].setPosition(1700, Rand - (GAP * 5) + 10);
+            }
+    }
+
+    void MovePipesFive()
+    {
+        GenRan();
+
+        if (PiUp[3].getPosition().x <= DIS)
+            b = 1;
+
+        if (b == 1)
+        {
+            PiUp[4].move(SPEED, 0);
+            PiDown[4].move(SPEED, 0);
+        }
+
+        if (PiUp[4].getPosition().x <= -84)
+        {
+            PiUp[4].setPosition(1700, Rand);
+            PiDown[4].setPosition(1700, Rand - (GAP * 5) + 10);
         }
     }
 
@@ -141,11 +180,13 @@ struct Pipes
         MovePipesOne();
         MovePipesTwo();
         MovePipesThree();
+        MovePipesFour();
+        MovePipesFive();
     }
     
     void Draw()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             window.draw(PiUp[i]);
             window.draw(PiDown[i]);
@@ -163,14 +204,15 @@ struct Ground
         Grounds.loadFromFile("Land.PNG");
         TwoGrounds.setTexture(Grounds);
         TwoGrounds.setPosition(PosX, PosY);
+        TwoGrounds.setScale(2.2, 1);
     }
 
     void MoveGrounds()
     {
         TwoGrounds.move(SPEED, 0);
 
-        if (TwoGrounds.getPosition().x <= -780)
-            TwoGrounds.setPosition(780, 500);
+        if (TwoGrounds.getPosition().x <= -1700)
+            TwoGrounds.setPosition(1700, 650);
     }
 
     void Draw()
@@ -188,7 +230,7 @@ struct Bird
     SoundBuffer H, J, W;
     Sound Hit, Jump, Whoop;
     int Rotation = 0, Iterator = 0;
-    float Velocity;
+    float Velocity, Gravity;
     bool Input = 0, Splayed, ToMove;
 
     void Constructor(float Scale, float PosX, float PosY)
@@ -213,7 +255,7 @@ struct Bird
         W.loadFromFile("Whoop.wav");
         Whoop.setBuffer(W);
 
-        Splayed = 0, Velocity = 0, ToMove = 0;
+        Splayed = 0, Velocity = 0, ToMove = 0, Gravity = 0.3;
     }
 
     void Animate()
@@ -269,9 +311,10 @@ struct Bird
             if (event.mouseButton.button == Mouse::Left)
             {
                 Jump.play();
-
                 Input = 1;
-                Velocity = -5;
+
+                    Velocity = -5;
+
                 Bird.move(0, Velocity * 9 / 5);
             }
         }
@@ -296,7 +339,7 @@ struct Bird
             RotateUp();
 
             Bird.move(0, Velocity);
-            Velocity += 0.3;
+            Velocity += Gravity;
     }
 
     void CollisionWPipes(Sprite pipes[])
@@ -343,6 +386,27 @@ struct Bird
     }
 } Bird;
 
+struct Difficulty
+{
+    Clock timer;
+    bool x = 0;
+
+    void SetDifficulty()
+    {
+        if (diff == 2)
+        {
+            cout << timer.getElapsedTime().asSeconds() << endl;
+            if (timer.getElapsedTime().asSeconds() < 10 && timer.getElapsedTime().asSeconds() > 5 && !x)
+            {
+               // Bird.Velocity = 5;
+                Bird.Gravity *= -1;
+                cout << "Case 2" << endl;
+                x = 1;
+            }
+        }
+    }
+}d;
+
 struct Themes
 {
     Sprite themes;
@@ -356,6 +420,7 @@ struct Themes
         Textures[3].loadFromFile("London.png");
 
         themes.setTexture(Textures[0]);
+        themes.setScale(3, 1.1);
     }
 
     void Draw(int x)
@@ -380,12 +445,11 @@ struct Scoring
         Score.setFont(ScoreFont);
         Score.setCharacterSize(size);
         Score.setPosition(x, y); // 280, 100
-        Score.setString("1");
         Score.setString(to_string(Sinc));
 
         HighScore.setFont(ScoreFont);
         HighScore.setString(to_string(highScore));
-        HighScore.setPosition(XPSCORE, 1175);
+        HighScore.setPosition(880, 1175);
         HighScore.setCharacterSize(20);
 
         ScoInc.loadFromFile("Score.wav");
@@ -417,7 +481,7 @@ struct Scoring
 
     void IncScore()
     {
-        if ((Bird.Bird.getPosition().x + 1 == Pipes.PiUp[0].getPosition().x || Bird.Bird.getPosition().x + 1 == Pipes.PiUp[1].getPosition().x || Bird.Bird.getPosition().x + 1 == Pipes.PiUp[2].getPosition().x))
+        if ((Bird.Bird.getPosition().x == Pipes.PiUp[0].getPosition().x || Bird.Bird.getPosition().x == Pipes.PiUp[1].getPosition().x || Bird.Bird.getPosition().x  == Pipes.PiUp[2].getPosition().x) || Bird.Bird.getPosition().x == Pipes.PiUp[3].getPosition().x || Bird.Bird.getPosition().x == Pipes.PiUp[4].getPosition().x)
         {
              ScoreSound.play();
              Sinc++;
@@ -429,7 +493,7 @@ struct Scoring
     {
         if (!MoveScoreUp)
         {
-            Constructor(XPSCORE, 1115, 20);
+            Constructor(880, 1115, 20);
             MoveScoreUp = 1;
         }
 
@@ -460,12 +524,12 @@ struct TapToPlayMenu
         Textures[0].loadFromFile("ttplay.png");
         Stuff[0].setTexture(Textures[0]);
         Stuff[0].setScale(0.8, 0.8);
-        Stuff[0].setPosition(250, 200);
+        Stuff[0].setPosition(800, 200);
 
         Textures[1].loadFromFile("getready.png");
         Stuff[1].setTexture(Textures[1]);
         Stuff[1].setScale(1.1, 1.1);
-        Stuff[1].setPosition(185, 100);
+        Stuff[1].setPosition(735, 100);
     }
     void Draw()
     {
@@ -494,11 +558,11 @@ struct GameOverMenu
                 over[i].setScale(1.2, 1.2);
         }
 
-        over[0].setPosition(175, 1000);
-        over[1].setPosition(150, 1075);
+        over[0].setPosition(675, 1000);
+        over[1].setPosition(650, 1075);
 
-        over[2].setPosition(175, 1225);
-        over[3].setPosition(300, 1225);
+        over[2].setPosition(675, 1225);
+        over[3].setPosition(800, 1225);
     }
 
 
@@ -541,12 +605,12 @@ struct ForModeControl
                 ttp = 1;
                 modes = 0;
 
-                Lone.Constructor(0, 500);
-                Ltwo.Constructor(780, 500);
+                Lone.Constructor(0, 650);
+                Ltwo.Constructor(780, 650);
 
                 Pipes.Constructor();
 
-                Bird.Constructor(1.2, 150, 250);
+                Bird.Constructor(1.5, 300, 250);
 
                 Themes.Constructor();
 
@@ -592,8 +656,9 @@ struct Gamemodes
     {
         Bird.CollisionWGround();
         Bird.CollisionWGround();
-        Bird.CollisionWPipes(Pipes.PiUp);
-        Bird.CollisionWPipes(Pipes.PiDown);
+       // Bird.CollisionWPipes(Pipes.PiUp);
+        //Bird.CollisionWPipes(Pipes.PiDown);
+       // d.SetDifficulty();
 
         Bird.GUI();
         Bird.Animate();
@@ -667,17 +732,19 @@ struct Game
     }
 } Game;
 
+
+
 int main()
 {
-    window.setPosition(Vector2i(400, 50));
+    window.setPosition(Vector2i(100, 50));
     window.setFramerateLimit(60);
 
-    Bird.Constructor(1.2, 150, 250);
+    Bird.Constructor(1, 300, 250);
 
     Pipes.Constructor();
 
-    Lone.Constructor(0, 500);
-    Ltwo.Constructor(780, 500);
+    Lone.Constructor(0, 650);
+    Ltwo.Constructor(1700, 650);
 
     Themes.Constructor();
 
@@ -685,7 +752,7 @@ int main()
 
     Gover.Constuctor();
 
-    Score.Constructor(280, 100, 50);
+    Score.Constructor(800, 100, 50);
 
     Flash.Constructor();
 

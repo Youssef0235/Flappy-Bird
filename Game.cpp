@@ -6,11 +6,9 @@
 using namespace std;
 using namespace sf;
 
-/* =================== EASY LEVEL =================== */ 
-
 #define SPEED -5 // Speed of pipes and grounds
 #define Sover -10 // Transition for game over
-#define GAP 115 // gap between pipes
+#define GAP 165 // gap between pipes
 #define DIS 1330 // distances between pipes
 
 RenderWindow window(VideoMode(1700, 800), "Flappy Bird", Style::Default);
@@ -18,6 +16,7 @@ Event event;
 
 short int modes = 0, diff = 2;
 bool ttp = 0;
+float Velocity, Gravity, PipeSpeedUpNDown = 1.5;
 
 
 
@@ -46,7 +45,7 @@ struct Flash
 
         else
             TheFlash.setFillColor(Color(0, 0, 0, 0));
-        
+
         window.draw(TheFlash);
     }
 } Flash;
@@ -62,8 +61,8 @@ struct Pipes
 
     void Constructor()
     {
-        Tex[0].loadFromFile("pipeup1.png");
-        Tex[1].loadFromFile("pipedown1.png");
+        Tex[0].loadFromFile("pipeup2.png");
+        Tex[1].loadFromFile("pipedown2.png");
 
         for (int i = 0; i < 5; i++)
         {
@@ -72,26 +71,26 @@ struct Pipes
             PiUp[i].setPosition(1700, Rand);
 
             PiDown[i].setTexture(Tex[1]);
-            PiDown[i].setPosition(1700, Rand - GAP * 5);
+            PiDown[i].setPosition(1700, PiUp[i].getPosition().y - GAP * 5);
         }
         x = 0, y = 0, a = 0, b = 0;
     }
 
     void GenRan()
     {
-        Rand = 200 + rand() % 296;
+        Rand = 240 + rand() % 296;
     }
-    
+
     void MovePipesOne()
     {
         GenRan();
         PiUp[0].move(SPEED, 0);
         PiDown[0].move(SPEED, 0);
 
-        if (PiUp[0].getPosition().x <= -84)
+        if (PiUp[0].getPosition().x <= -112)
         {
             PiUp[0].setPosition(1700, Rand);
-            PiDown[0].setPosition(1700, Rand - GAP * 5);
+            PiDown[0].setPosition(1700, PiUp[0].getPosition().y - GAP * 5);
         }
     }
 
@@ -108,10 +107,10 @@ struct Pipes
             PiDown[1].move(SPEED, 0);
         }
 
-        if (PiUp[1].getPosition().x <= -84)
+        if (PiUp[1].getPosition().x <= -112)
         {
             PiUp[1].setPosition(1700, Rand);
-            PiDown[1].setPosition(1700, Rand - GAP * 5);
+            PiDown[1].setPosition(1700, PiUp[1].getPosition().y - GAP * 5);
         }
     }
 
@@ -128,31 +127,31 @@ struct Pipes
             PiDown[2].move(SPEED, 0);
         }
 
-        if (PiUp[2].getPosition().x <= -84)
+        if (PiUp[2].getPosition().x <= -112)
         {
             PiUp[2].setPosition(1700, Rand);
-            PiDown[2].setPosition(1700, Rand - (GAP * 5) + 10);
+            PiDown[2].setPosition(1700, PiUp[2].getPosition().y - (GAP * 5) + 10);
         }
     }
 
     void MovePipesFour()
     {
-            GenRan();
+        GenRan();
 
-            if (PiUp[2].getPosition().x <= DIS)
-                a = 1;
+        if (PiUp[2].getPosition().x <= DIS)
+            a = 1;
 
-            if (a == 1)
-            {
-                PiUp[3].move(SPEED, 0);
-                PiDown[3].move(SPEED, 0);
-            }
+        if (a == 1)
+        {
+            PiUp[3].move(SPEED, 0);
+            PiDown[3].move(SPEED, 0);
+        }
 
-            if (PiUp[3].getPosition().x <= -84)
-            {
-                PiUp[3].setPosition(1700, Rand);
-                PiDown[3].setPosition(1700, Rand - (GAP * 5) + 10);
-            }
+        if (PiUp[3].getPosition().x <= -112)
+        {
+            PiUp[3].setPosition(1700, Rand);
+            PiDown[3].setPosition(1700, PiUp[3].getPosition().y - (GAP * 5) + 10);
+        }
     }
 
     void MovePipesFive()
@@ -168,10 +167,10 @@ struct Pipes
             PiDown[4].move(SPEED, 0);
         }
 
-        if (PiUp[4].getPosition().x <= -84)
+        if (PiUp[4].getPosition().x <= -112)
         {
             PiUp[4].setPosition(1700, Rand);
-            PiDown[4].setPosition(1700, Rand - (GAP * 5) + 10);
+            PiDown[4].setPosition(1700, PiUp[4].getPosition().y - (GAP * 5) + 10);
         }
     }
 
@@ -183,7 +182,7 @@ struct Pipes
         MovePipesFour();
         MovePipesFive();
     }
-    
+
     void Draw()
     {
         for (int i = 0; i < 5; i++)
@@ -226,12 +225,12 @@ struct Bird
 {
     Texture Tx[4];
     Sprite Bird;
-    Clock dt, UpAndDown;
+    Clock dt, UpAndDown, PipeTimer;
     SoundBuffer H, J, W;
     Sound Hit, Jump, Whoop;
     int Rotation = 0, Iterator = 0;
-    float Velocity, Gravity;
-    bool Input = 0, Splayed, ToMove;
+    float  Gravity;
+    bool Input = 0, Splayed, ToMove, ForPipeTimer;
 
     void Constructor(float Scale, float PosX, float PosY)
     {
@@ -255,7 +254,7 @@ struct Bird
         W.loadFromFile("Whoop.wav");
         Whoop.setBuffer(W);
 
-        Splayed = 0, Velocity = 0, ToMove = 0, Gravity = 0.3;
+        Splayed = 0, Velocity = 0, ToMove = 0, Gravity = 0.35, ForPipeTimer = 0;
     }
 
     void Animate()
@@ -313,6 +312,10 @@ struct Bird
                 Jump.play();
                 Input = 1;
 
+                if (diff == 1)
+                    Velocity = 5;
+
+                else
                     Velocity = -5;
 
                 Bird.move(0, Velocity * 9 / 5);
@@ -324,27 +327,86 @@ struct Bird
             if (event.mouseButton.button == Mouse::Left)
                 Input = 0;
         }
-        
+
     }
 
-    void gravNvelo(Event event)
+    void Difficulties()
+    {
+  
+        if (modes == 1 && !ForPipeTimer)
+        {
+            PipeTimer.restart();
+            ForPipeTimer = 1;
+        }
+
+
+        if (diff == 0)
+        {
+            Velocity += Gravity;
+
+            if (Velocity >= 0)
+                RotateDown();
+
+            else
+                RotateUp();
+        }
+
+        if (diff == 1)
+        {
+            Velocity -= Gravity;
+            if (Velocity <= 0)
+                RotateDown();
+
+            else
+                RotateUp();
+        }
+
+        if (diff == 2)
+        {
+            cout << Pipes.PiUp[1].getPosition().y << endl;
+            Velocity += Gravity;
+
+            if (Velocity >= 0)
+                RotateDown();
+
+            else
+                RotateUp();
+
+                for (int i = 0; i < 5; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        Pipes.PiUp[i].move(0, -PipeSpeedUpNDown);
+                        Pipes.PiDown[i].move(0, -PipeSpeedUpNDown);
+                    }
+                    else
+                    {
+                        Pipes.PiUp[i].move(0, PipeSpeedUpNDown);
+                        Pipes.PiDown[i].move(0, PipeSpeedUpNDown);
+                    }
+
+
+                if ((int)PipeTimer.getElapsedTime().asSeconds() == 2)
+                {
+                    PipeSpeedUpNDown *= -1;
+                    PipeTimer.restart();
+                }
+            }
+        }
+    }
+
+    void gravNvelo()
     {
         if (Bird.getPosition().y <= 0)
             Bird.setPosition(Bird.getPosition().x, 0);
 
-        if (Velocity >= 0)
-            RotateDown();
-
-        else 
-            RotateUp();
-
-            Bird.move(0, Velocity);
-            Velocity += Gravity;
+        Difficulties();
+        Bird.move(0, Velocity);
     }
 
     void CollisionWPipes(Sprite pipes[])
     {
-        if (Bird.getGlobalBounds().intersects(pipes[0].getGlobalBounds()) || Bird.getGlobalBounds().intersects(pipes[1].getGlobalBounds()) || Bird.getGlobalBounds().intersects(pipes[2].getGlobalBounds()))
+        if (Bird.getGlobalBounds().intersects(pipes[0].getGlobalBounds()) || Bird.getGlobalBounds().intersects(pipes[1].getGlobalBounds()) || Bird.getGlobalBounds().intersects(pipes[2].getGlobalBounds()) || Bird.getGlobalBounds().intersects(pipes[3].getGlobalBounds()) || Bird.getGlobalBounds().intersects(pipes[4].getGlobalBounds()))
         {
             if (!Splayed)
             {
@@ -386,27 +448,6 @@ struct Bird
     }
 } Bird;
 
-struct Difficulty
-{
-    Clock timer;
-    bool x = 0;
-
-    void SetDifficulty()
-    {
-        if (diff == 2)
-        {
-            cout << timer.getElapsedTime().asSeconds() << endl;
-            if (timer.getElapsedTime().asSeconds() < 10 && timer.getElapsedTime().asSeconds() > 5 && !x)
-            {
-               // Bird.Velocity = 5;
-                Bird.Gravity *= -1;
-                cout << "Case 2" << endl;
-                x = 1;
-            }
-        }
-    }
-}d;
-
 struct Themes
 {
     Sprite themes;
@@ -436,7 +477,7 @@ struct Scoring
     Text Score, HighScore;
     SoundBuffer ScoInc;
     Sound ScoreSound;
-    int Sinc, highScore = 0;
+    int Sinc, EasyHigh = 0, MediumHigh = 0, HardHigh = 0;
     bool Inc, MoveScoreUp;
 
     void Constructor(int x, int y, int size)
@@ -448,44 +489,95 @@ struct Scoring
         Score.setString(to_string(Sinc));
 
         HighScore.setFont(ScoreFont);
-        HighScore.setString(to_string(highScore));
+
         HighScore.setPosition(880, 1175);
         HighScore.setCharacterSize(20);
 
         ScoInc.loadFromFile("Score.wav");
         ScoreSound.setBuffer(ScoInc);
 
-        ifstream highScoreFile("highscore.txt");
-
-        if (highScoreFile.is_open())
-        {
-            highScoreFile >> highScore;
-            highScoreFile.close();
-        }
         Inc = 0, MoveScoreUp = 0, Sinc = 0;
     }
 
     void hsSetup()
     {
-        if (Sinc > highScore)
-            highScore = Sinc;
+        ifstream EasyHighScore("EasyHighScore.txt");
+        ifstream MediumHighScore("MediumHighScore.txt");
+        ifstream HardHighScore("HardHighScore.txt");
 
-        ofstream highScoreFile("highscore.txt");
-        if (highScoreFile.is_open())
+        if (diff == 0)
         {
-            highScoreFile << highScore;
-            highScoreFile.close();
+            HighScore.setString(to_string(EasyHigh));
+
+            if (EasyHighScore.is_open())
+            {
+                EasyHighScore >> EasyHigh;
+                EasyHighScore.close();
+            }
+
+            if (Sinc > EasyHigh)
+                EasyHigh = Sinc;
+
+            ofstream highScoreFile("EasyHighScore.txt");
+            if (EasyHighScore.is_open())
+            {
+                highScoreFile << EasyHigh;
+                highScoreFile.close();
+            }
         }
-        // Reset Highest Score From Here
+
+        if (diff == 1)
+        {
+            HighScore.setString(to_string(MediumHigh));
+
+            if (MediumHighScore.is_open())
+            {
+                MediumHighScore >> MediumHigh;
+                MediumHighScore.close();
+            }
+
+            if (Sinc > MediumHigh)
+                MediumHigh = Sinc;
+
+            ofstream highScoreFile("MediumHighScore.txt");
+            if (highScoreFile.is_open())
+            {
+                highScoreFile << MediumHigh;
+                highScoreFile.close();
+            }
+        }
+
+        if (diff == 2)
+        {
+            HighScore.setString(to_string(HardHigh));
+
+            if (HardHighScore.is_open())
+            {
+                HardHighScore >> HardHigh;
+                HardHighScore.close();
+            }
+
+            if (Sinc > HardHigh)
+                HardHigh = Sinc;
+
+            ofstream highScoreFile("HardHighScore.txt");
+            if (highScoreFile.is_open())
+            {
+                highScoreFile << HardHigh;
+                highScoreFile.close();
+            }
+        }
+
+       
     }
 
     void IncScore()
     {
-        if ((Bird.Bird.getPosition().x == Pipes.PiUp[0].getPosition().x || Bird.Bird.getPosition().x == Pipes.PiUp[1].getPosition().x || Bird.Bird.getPosition().x  == Pipes.PiUp[2].getPosition().x) || Bird.Bird.getPosition().x == Pipes.PiUp[3].getPosition().x || Bird.Bird.getPosition().x == Pipes.PiUp[4].getPosition().x)
+        if ((Bird.Bird.getPosition().x == Pipes.PiUp[0].getPosition().x || Bird.Bird.getPosition().x == Pipes.PiUp[1].getPosition().x || Bird.Bird.getPosition().x == Pipes.PiUp[2].getPosition().x) || Bird.Bird.getPosition().x == Pipes.PiUp[3].getPosition().x || Bird.Bird.getPosition().x == Pipes.PiUp[4].getPosition().x)
         {
-             ScoreSound.play();
-             Sinc++;
-             Score.setString(to_string(Sinc));
+            ScoreSound.play();
+            Sinc++;
+            Score.setString(to_string(Sinc));
         }
     }
 
@@ -592,33 +684,33 @@ struct GameOverMenu
 
 struct ForModeControl
 {
-    void ControlModeOne ()
+    void ControlModeOne()
     {
         if (Mouse::isButtonPressed(Mouse::Left) && modes == 0 && !ttp)
-        modes = 1;
+            modes = 1;
     }
 
     void Reset()
     {
         if (Mouse::isButtonPressed(Mouse::Left) && modes == 2 && Mouse::getPosition().x <= 683 && Mouse::getPosition().x >= 587 && Mouse::getPosition().y <= 530 && Mouse::getPosition().y >= 480 && Gover.over[2].getPosition().y <= 400)
         {
-                ttp = 1;
-                modes = 0;
+            ttp = 1;
+            modes = 0;
 
-                Lone.Constructor(0, 650);
-                Ltwo.Constructor(780, 650);
+            Lone.Constructor(0, 650);
+            Ltwo.Constructor(780, 650);
 
-                Pipes.Constructor();
+            Pipes.Constructor();
 
-                Bird.Constructor(1.5, 300, 250);
+            Bird.Constructor(2, 300, 250);
 
-                Themes.Constructor();
+            Themes.Constructor();
 
-                Score.Constructor(280, 100, 50);
+            Score.Constructor(280, 100, 50);
 
-                Gover.Constuctor();
+            Gover.Constuctor();
 
-                Flash.Constructor();
+            Flash.Constructor();
         }
 
         if (event.type == Event::MouseButtonReleased)
@@ -656,19 +748,17 @@ struct Gamemodes
     {
         Bird.CollisionWGround();
         Bird.CollisionWGround();
-       // Bird.CollisionWPipes(Pipes.PiUp);
-        //Bird.CollisionWPipes(Pipes.PiDown);
-       // d.SetDifficulty();
-
+        Bird.CollisionWPipes(Pipes.PiUp);
+        Bird.CollisionWPipes(Pipes.PiDown);
+        Bird.gravNvelo();
         Bird.GUI();
         Bird.Animate();
-        Bird.gravNvelo(event);
 
         Pipes.MovePipes();
 
         Lone.MoveGrounds();
         Ltwo.MoveGrounds();
-       
+
         Score.IncScore();
 
         window.clear();
@@ -739,7 +829,7 @@ int main()
     window.setPosition(Vector2i(100, 50));
     window.setFramerateLimit(60);
 
-    Bird.Constructor(1, 300, 250);
+    Bird.Constructor(1.7, 300, 250);
 
     Pipes.Constructor();
 
@@ -763,13 +853,13 @@ int main()
             if (event.type == Event::Closed)
                 window.close();
         }
- 
+
         Control.ControlModeOne();
         Control.Reset();
         Score.hsSetup();
 
         // Full Game
-        Game.Flappy_Bird(); 
+        Game.Flappy_Bird();
     }
     return 0;
 }

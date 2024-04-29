@@ -14,7 +14,7 @@ using namespace sf;
 RenderWindow window(VideoMode(1700, 800), "Flappy Bird", Style::Default);
 Event event;
 
-short int modes = 0, diff = 2;
+short int modes = 0, diff = 1, BirdTheme = 2;
 bool ttp = 0;
 float Velocity, Gravity, PipeSpeedUpNDown = 1.5;
 
@@ -223,7 +223,7 @@ struct Ground
 
 struct Bird
 {
-    Texture Tx[4];
+    Texture TxOne[4], TxTwo[4], TxThree[4];
     Sprite Bird;
     Clock dt, UpAndDown, PipeTimer;
     SoundBuffer H, J, W;
@@ -232,14 +232,24 @@ struct Bird
     float  Gravity;
     bool Input = 0, Splayed, ToMove, ForPipeTimer;
 
-    void Constructor(float Scale, float PosX, float PosY)
+    void Constructor(float Scale, float PosX, float PosY, int Birdtheme)
     {
-        Tx[0].loadFromFile("birddown.png");
-        Tx[1].loadFromFile("birdmid.png");
-        Tx[2].loadFromFile("birdup.png");
-        Tx[3].loadFromFile("birdmid.png");
+        TxOne[0].loadFromFile("birddown.png");
+        TxOne[1].loadFromFile("birdmid.png");
+        TxOne[2].loadFromFile("birdup.png");
+        TxOne[3].loadFromFile("birdmid.png");
 
-        Bird.setTexture(Tx[Iterator]);
+        TxTwo[0].loadFromFile("birddown2.png");
+        TxTwo[1].loadFromFile("birdmid2.png");
+        TxTwo[2].loadFromFile("birdup2.png");
+        TxTwo[3].loadFromFile("birdmid2.png");
+
+        TxThree[0].loadFromFile("birddown3.png");
+        TxThree[1].loadFromFile("birdmid3.png");
+        TxThree[2].loadFromFile("birdup3.png");
+        TxThree[3].loadFromFile("birdmid3.png");
+
+
         Bird.setPosition(PosX, PosY);
         Bird.setOrigin(Bird.getGlobalBounds().width / 2, Bird.getGlobalBounds().height / 2);
         Bird.setScale(Scale, Scale);
@@ -254,7 +264,7 @@ struct Bird
         W.loadFromFile("Whoop.wav");
         Whoop.setBuffer(W);
 
-        Splayed = 0, Velocity = 0, ToMove = 0, Gravity = 0.35, ForPipeTimer = 0;
+        Splayed = 0, Velocity = 0, ToMove = 0, Gravity = 0.35, ForPipeTimer = 0, BirdTheme = Birdtheme;
     }
 
     void Animate()
@@ -267,7 +277,15 @@ struct Bird
             else
                 Iterator = 0;
 
-            Bird.setTexture(Tx[Iterator]);
+            if (BirdTheme == 0)
+            Bird.setTexture(TxOne[Iterator]);
+
+            if (BirdTheme == 1)
+                Bird.setTexture(TxTwo[Iterator]); 
+            
+            if (BirdTheme == 2)
+                Bird.setTexture(TxThree[Iterator]);
+
             dt.restart();
         }
     }
@@ -702,7 +720,7 @@ struct ForModeControl
 
             Pipes.Constructor();
 
-            Bird.Constructor(2, 300, 250);
+            Bird.Constructor(2, 300, 250, 1);
 
             Themes.Constructor();
 
@@ -829,7 +847,7 @@ int main()
     window.setPosition(Vector2i(100, 50));
     window.setFramerateLimit(60);
 
-    Bird.Constructor(1.7, 300, 250);
+    Bird.Constructor(1.7, 300, 250, 1);
 
     Pipes.Constructor();
 

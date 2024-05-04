@@ -372,6 +372,7 @@ struct Themes
 {
     Sprite themes;
     Texture Textures[4];
+    bool ForError;
     void Constructor()
     {
         Textures[0].loadFromFile("Classic.png");
@@ -382,34 +383,40 @@ struct Themes
         themes.setTexture(Textures[0]);
         themes.setScale(2.85, 1.5);
         themes.setPosition(0, -100);
+
+        ForError = 0;
     }
 
     void ChoosingThemeGUI()
     {
-        if (currentGameState == GameState::eThemes)
+        if (currentGameState == GameState::eThemes && !ForError)
         {
             if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 840 && Mouse::getPosition(window).x < 1258 && Mouse::getPosition(window).y > 41 && Mouse::getPosition(window).y < 327)
             {
                 ChooseTheme = 3;
                 currentGameState = GameState::MainMenu;
+                ForError = 1;
             }
 
             if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 840 && Mouse::getPosition(window).x < 1258 && Mouse::getPosition(window).y > 330 && Mouse::getPosition(window).y < 690)
             {
                 ChooseTheme = 2;
                 currentGameState = GameState::MainMenu;
+                ForError = 1;
             }
 
             if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 438 && Mouse::getPosition(window).x < 827 && Mouse::getPosition(window).y > 41 && Mouse::getPosition(window).y < 327)
             {
                 ChooseTheme = 0;
                 currentGameState = GameState::MainMenu;
+                ForError = 1;
             }
 
             if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 438 && Mouse::getPosition(window).x < 827 && Mouse::getPosition(window).y > 333 && Mouse::getPosition(window).y < 688)
             {
                 ChooseTheme = 1;
                 currentGameState = GameState::MainMenu;
+                ForError = 1;
             }
         }
     }
@@ -440,7 +447,7 @@ struct Scoring
 
         HighScore.setFont(ScoreFont);
 
-        HighScore.setPosition(880, 1175);
+        HighScore.setPosition(950, 1195);
         HighScore.setCharacterSize(20);
 
         ScoInc.loadFromFile("Score.wav");
@@ -517,9 +524,6 @@ struct Scoring
                 highScoreFile.close();
             }
         }
-
-
-
     }
 
     void IncScore()
@@ -538,14 +542,14 @@ struct Scoring
 
         if (!MoveScoreUp)
         {
-            Constructor(880, 1115, 20);
+            Constructor(950, 1135, 20);
             MoveScoreUp = 1;
         }
 
-        if (HighScore.getPosition().y > 345)
+        if (HighScore.getPosition().y > 370) 
             HighScore.move(0, Sover);
 
-        if (Score.getPosition().y > 290)
+        if (Score.getPosition().y > 310) 
             Score.move(0, Sover);
     }
 
@@ -615,41 +619,44 @@ struct GameOverMenu
         medalTx[2].loadFromFile("Gold-Medal.png");
         medalTx[3].loadFromFile("Platinum-Medal.png");
 
-        medal.setScale(0.5, 0.5);
+        medal.setScale(0.55, 0.55);
 
         for (int i = 0; i < 4; i++)
         {
             over[i].setTexture(gameOver[i]);  // over 0 = gameover, over 1 = score
 
-            if (i < 2)
-                over[i].setScale(1.2, 1.2);
-        }
-        over[0].setScale(1.5, 1.5);
+            if (i == 1)
+                over[i].setScale(1.5, 1.5);
 
-        over[0].setPosition(650, 1000);
+            else
+                over[i].setScale(1.4, 1.4);
+        }
+        over[0].setScale(1.6, 1.6);
+
+        over[0].setPosition(665, 985);
         over[1].setPosition(650, 1075);
 
-        over[2].setPosition(675, 1225);
-        over[3].setPosition(800, 1225);
-        medal.setPosition(685, 1119);
+        over[2].setPosition(670, 1265);
+        over[3].setPosition(845, 1265);
+        medal.setPosition(695, 1140); // 685, 1119
     }
 
     void Transition()
     {
 
-        if (over[0].getPosition().y > 175)
+        if (over[0].getPosition().y > 160)
             over[0].move(0, Sover);
 
         if (over[1].getPosition().y > 250)
             over[1].move(0, Sover);
 
-        if (over[2].getPosition().y > 400)
+        if (over[2].getPosition().y > 440)
             over[2].move(0, Sover);
 
-        if (over[3].getPosition().y > 400)
+        if (over[3].getPosition().y > 440)
             over[3].move(0, Sover);
 
-        if (medal.getPosition().y > 295)
+        if (medal.getPosition().y > 315) // 295
             medal.move(0, Sover);
 
     }
@@ -667,14 +674,28 @@ struct GameOverMenu
 
         if (Score.Sinc > 39)
             medal.setTexture(medalTx[3]);
-
     }
 
     void Draw()
     {
         for (int i = 0; i < 4; i++)
+        {
             window.draw(over[i]);
-        window.draw(medal);
+            window.draw(medal);
+        }
+    }
+
+    void GameOverGUI()
+    {
+        if (Mouse::isButtonPressed(Mouse::Left) && currentGameState == GameState::GameOver)
+        {
+            
+            if (Mouse::getPosition(window).x > 671 && Mouse::getPosition(window).x < 815 && Mouse::getPosition(window).y > 438 && Mouse::getPosition(window).y < 513)
+                currentGameState = GameState::eTTP;
+
+            if (Mouse::getPosition(window).x > 845 && Mouse::getPosition(window).x < 988 && Mouse::getPosition(window).y > 438 && Mouse::getPosition(window).y < 513)
+                currentGameState = GameState::eThemes;
+        }
     }
 } Gover;
 
@@ -734,92 +755,63 @@ struct Difficulty
 
 struct Menu
 {
+    Sprite MainMenuS[8];
+    RectangleShape WhiteRectangles[5];
+    Texture MainMenuT[5];
     RectangleShape darkWindow;
-    Texture Rate;
-    Sprite SpriteRate;
-
-    Texture Bc1;
-    Sprite MainBackGrounds[2];
-    RectangleShape RectangleRate;
-
-
     Text textrate;
-
-    Texture MainMenu;
-    RectangleShape SpriteMainMenu;
-    Texture mainmenubgdark;
-    Sprite bgdark;
     Vector2u windowSize = window.getSize();
-
-    Texture Title;
-    Sprite SpriteTitle;
-
-    Sprite btnplay;
-    Texture Theme;
-    Sprite SpriteTheme;
-    //flexibility
-    Texture returnback;
-    Sprite SpriteReturnBack;
-
-
-    RectangleShape rectangle;
-    //triangle
     CircleShape triangle;
-
-
-    //themes for bird
-
-    Texture birdthemes;
-    Sprite SpriteBIRDthemes;
-
-
-    RectangleShape rectanglebirdthemes;
-
     Sprite BirdForButton; // Bird On Button
-
-    
     Texture birdtheme;
-    Sprite Birdtheme;
 
     void set()
     {
         birdtheme.loadFromFile("birdmid3.png");
         BirdForButton.setTexture(birdtheme);
-        BirdForButton.setScale(1.5, 1.5);
+        BirdForButton.setScale(1.7, 1.7);
         BirdForButton.setPosition(1155, 570);
-        RectangleShape dar(Vector2f(SCREEN_W, SCREEN_H));
-        darkWindow = dar;
+
+        darkWindow.setSize(Vector2f(SCREEN_W, SCREEN_H));
         darkWindow.setFillColor(Color(0, 0, 0, 200));
 
-        RectangleShape rectanglebirdthemes1(Vector2f(200.f, 100.f));
-        rectanglebirdthemes = rectanglebirdthemes1;
-        birdthemes.loadFromFile("btn-play.png");
-        SpriteBIRDthemes.setTexture(birdthemes);
-        SpriteBIRDthemes.setPosition(Vector2f(1100, 550));
-        SpriteBIRDthemes.setScale(1.5f, 1.5f);
-        rectanglebirdthemes.setPosition(Vector2f(1120, 560));
-        rectanglebirdthemes.setFillColor(Color::White);
-        rectanglebirdthemes.setScale(0.5f, 0.65f);
 
 
-        Bc1.loadFromFile("land.png");
 
-        RectangleShape RectangleRate111(Vector2f(95.0f, 35.0f));
-        RectangleShape rectangle111(Vector2f(70.0f, 25.0f));
-        rectangle = rectangle111;
-        RectangleRate = RectangleRate111;
+        MainMenuT[0].loadFromFile("btn-play.png");
+        MainMenuT[1].loadFromFile("Theme.png");
+        MainMenuT[2].loadFromFile("game_title.png");
+        MainMenuT[3].loadFromFile("btn-rate.png");
+
+
+
+        MainMenuS[4].setTexture(MainMenuT[0]);
+        MainMenuS[4].setPosition(Vector2f(1100, 550));
+        MainMenuS[4].setScale(1.5f, 1.5f);
+
+
+        WhiteRectangles[0].setSize(Vector2f(200.f, 100.f));
+        WhiteRectangles[0].setPosition(Vector2f(1120, 560));
+        WhiteRectangles[0].setFillColor(Color::White);
+        WhiteRectangles[0].setScale(0.5f, 0.65f);
+
+
+
+
         textrate.setFont(fontrate);
         textrate.setCharacterSize(25);
         textrate.setString("Credits");
         textrate.setFillColor((Color(240, 240, 0, 255)));
         textrate.setPosition(713, 580);
-        Rate.loadFromFile("btn-rate.png");
-        SpriteRate.setTexture(Rate);
-        SpriteRate.setPosition(Vector2f(700, 550));
-        SpriteRate.setScale(2.5f, 2.5f);
-        RectangleRate.setPosition(Vector2f(725, 570));
-        RectangleRate.setOutlineColor(Color::White);
-        RectangleRate.setFillColor(Color::White);
+
+        MainMenuS[3].setTexture(MainMenuT[3]);
+        MainMenuS[3].setPosition(Vector2f(700, 550));
+        MainMenuS[3].setScale(2.5f, 2.5f);
+
+        WhiteRectangles[1].setSize(Vector2f(95.0f, 35.0f));
+        WhiteRectangles[1].setPosition(Vector2f(725, 570));
+        WhiteRectangles[1].setOutlineColor(Color::White);
+        WhiteRectangles[1].setFillColor(Color::White);
 
 
         triangle.setPosition(Vector2f(33.f, 48.f));
@@ -829,36 +821,30 @@ struct Menu
         triangle.setOutlineThickness(5.f);
         triangle.setRotation(270.f);
 
-        rectangle.setPosition(Vector2f(20.f, 14.f));
-        rectangle.setOutlineColor(Color::White);
-        rectangle.setFillColor(Color::White);
+        WhiteRectangles[2].setSize(Vector2f(70.0f, 25.0f));
+        WhiteRectangles[2].setPosition(Vector2f(20.f, 14.f));
+        WhiteRectangles[2].setOutlineColor(Color::White);
+        WhiteRectangles[2].setFillColor(Color::White);
 
 
-        btnplay.setTexture(birdthemes);
-        btnplay.setPosition(Vector2f(500, 550));
-        btnplay.setScale(1.5f, 1.5f);
-        SpriteReturnBack.setTexture(Rate);
-        SpriteReturnBack.setPosition(Vector2f(5, 5));
-        SpriteReturnBack.setScale(1.5f, 1.5f);
+        MainMenuS[1].setTexture(MainMenuT[0]);
+        MainMenuS[1].setPosition(Vector2f(500, 550));
+        MainMenuS[1].setScale(1.5f, 1.5f);
 
-        Theme.loadFromFile("Theme.png");
-        SpriteTheme.setTexture(Theme);
-        SpriteTheme.setPosition(Vector2f(900, 550));
+        MainMenuS[5].setTexture(MainMenuT[3]);
+        MainMenuS[5].setPosition(Vector2f(5, 5));
+        MainMenuS[5].setScale(1.5f, 1.5f);
 
-        SpriteTheme.setScale(1.5f, 1.5f);
+        MainMenuS[2].setTexture(MainMenuT[1]);
+        MainMenuS[2].setPosition(Vector2f(900, 550));
+        MainMenuS[2].setScale(1.5f, 1.5f);
 
-        Title.loadFromFile("game_title.png");
-        SpriteTitle.setTexture(Title);
-        SpriteTitle.setPosition(Vector2f(655, 100));
-        SpriteTitle.setScale(2.0f, 2.0f);
+        MainMenuS[0].setTexture(MainMenuT[2]);
+        MainMenuS[0].setPosition(Vector2f(655, 100));
+        MainMenuS[0].setScale(2.0f, 2.0f);
 
-        mainmenubgdark.loadFromFile("Dark bg.jpg");
-        MainMenu.loadFromFile("Classic.png");
-        bgdark.setTexture(mainmenubgdark);
-        RectangleShape SpriteMainMenu1(Vector2f(SCREEN_W, SCREEN_H));
-        SpriteMainMenu = SpriteMainMenu1;
-        SpriteMainMenu.setTexture(&MainMenu);
     }
+
     void draw()
     {
         Bird.UpNDown();
@@ -866,14 +852,14 @@ struct Menu
         Lone.Draw();
         Ltwo.Draw();
         Bird.Draw();
-        window.draw(menu.SpriteTitle);
-        window.draw(menu.btnplay);
-        window.draw(menu.SpriteTheme);
-        window.draw(menu.SpriteRate);
-        window.draw(menu.RectangleRate);
+        window.draw(MainMenuS[0]);
+        window.draw(MainMenuS[1]);
+        window.draw(MainMenuS[2]);
+        window.draw(MainMenuS[3]);
+        window.draw(WhiteRectangles[1]);
         window.draw(menu.textrate);
-        window.draw(menu.SpriteBIRDthemes);
-        window.draw(menu.rectanglebirdthemes);
+        window.draw(MainMenuS[4]);
+        window.draw(WhiteRectangles[0]);
         window.draw(BirdForButton);
     }
 }menu;
@@ -944,8 +930,8 @@ struct credits
             window.draw(text[i]);
             window.draw(birds[i]);
         }
-        window.draw(menu.SpriteReturnBack);
-        window.draw(menu.rectangle);
+        window.draw(menu.MainMenuS[5]);
+        window.draw(menu.WhiteRectangles[2]);
         window.draw(menu.triangle);
     }
 
@@ -1034,8 +1020,8 @@ struct themes
         Lone.Draw();
         Ltwo.Draw();
         window.draw(menu.darkWindow);
-        window.draw(menu.SpriteReturnBack);
-        window.draw(menu.rectangle);
+        window.draw(menu.MainMenuS[5]);
+        window.draw(menu.WhiteRectangles[2]);
         window.draw(menu.triangle);
         window.draw(theme.SpriteTheme1);
         window.draw(theme.SpriteTheme2);
@@ -1121,10 +1107,10 @@ struct levels
 
     void draw()
     {
-        window.draw(menu.SpriteReturnBack); // return back button
+        window.draw(menu.MainMenuS[5]); // return back button
         Lone.Draw();
         Ltwo.Draw();
-        window.draw(menu.rectangle); // 
+        window.draw(menu.WhiteRectangles[2]); // 
         window.draw(menu.triangle);
         window.draw(level.btnplay1);//
         window.draw(level.btnplay2); //
@@ -1158,8 +1144,8 @@ struct TapToPlayMenu
     {
         window.draw(Stuff[0]);
         window.draw(Stuff[1]);
-        window.draw(menu.SpriteReturnBack);
-        window.draw(menu.rectangle);
+        window.draw(menu.MainMenuS[5]);
+        window.draw(menu.WhiteRectangles[2]);
         window.draw(menu.triangle);
     }
 } Tmenu;
@@ -1178,7 +1164,7 @@ void Constructor()
 {
     for (int i = 0; i < 3; i++)
     {
-        ForBirdTheme[i].setTexture(menu.Rate);
+        ForBirdTheme[i].setTexture(menu.MainMenuT[3]);
         ForBirdTheme[i].setOrigin(ForBirdTheme[i].getGlobalBounds().width / 2, ForBirdTheme[i].getOrigin().y);
         ForBirdTheme[i].setScale(2, 2);
 
@@ -1227,8 +1213,8 @@ void drawBirdThemes()
     Ltwo.Draw();
     Birds.setNanimate();
     //window.draw(menu.darkWindow);
-    window.draw(menu.SpriteReturnBack);
-    window.draw(menu.rectangle);
+    window.draw(menu.MainMenuS[5]);
+    window.draw(menu.WhiteRectangles[2]);
     window.draw(menu.triangle);
 
     for (int i = 0; i < 3; i++)
@@ -1246,13 +1232,14 @@ struct ForModeControl
     {
         if (currentGameState == GameState::eTTP && oo == 1 && Keyboard::isKeyPressed(Keyboard::Space))
             currentGameState = GameState::eGame;
-        if (currentGameState != GameState::MainMenu)
+
+        if (currentGameState != GameState::MainMenu && currentGameState != GameState::eTTP)
             Reseting = 0;
     }
 
     void Reset()
     {
-        if (currentGameState == GameState::MainMenu && !Reseting)
+        if ((currentGameState == GameState::MainMenu || currentGameState == GameState::eTTP) && !Reseting)
         {
             Bird.Constructor(1.5, 300, 250);
 
@@ -1363,8 +1350,8 @@ struct Gamemodes
         Score.DrawHighScore();
         Flash.Draw();
 
-        window.draw(menu.SpriteReturnBack);
-        window.draw(menu.rectangle);
+        window.draw(menu.MainMenuS[5]);
+        window.draw(menu.WhiteRectangles[2]);
         window.draw(menu.triangle);
     }
 } Mode;
@@ -1463,14 +1450,24 @@ void draw()
 void transition()
 {
     Themes.ChoosingThemeGUI();
+    Gover.GameOverGUI();
+
+    if (Mouse::isButtonPressed(Mouse::Left) && currentGameState == GameState::eTTP)
+    {
+        Vector2i mousePos = Mouse::getPosition(window);
+        if (mousePos.x > 6 && mousePos.x < 96 && mousePos.y > 7 && mousePos.y < 57)
+            currentGameState = GameState::eDifficulty;
+    }
 
     //return
-    if (Mouse::isButtonPressed(Mouse::Left) && currentGameState != GameState::eGame)
+    else if (Mouse::isButtonPressed(Mouse::Left) && currentGameState != GameState::eGame)
     {
         Vector2i mousePos = Mouse::getPosition(window);
         if (mousePos.x > 6 && mousePos.x < 96 && mousePos.y > 7 && mousePos.y < 57)
             currentGameState = GameState::MainMenu;
     }
+
+    
     //button press
 
     if (Mouse::isButtonPressed(Mouse::Left) && currentGameState == GameState::MainMenu)

@@ -10,7 +10,6 @@ using namespace sf;
 #define Sover -10 // Transition for game over
 #define GAP 165 // gap between pipes
 #define DIS 1330 // distances between pipes
-#define distbet 100
 
 
 enum GameState
@@ -720,7 +719,7 @@ struct Menu
 
     void set()
     {
-        birdtheme.loadFromFile("birdmid3.png");
+        birdtheme.loadFromFile("birdup3.png");
         BirdForButton.setTexture(birdtheme);
         BirdForButton.setScale(1.7, 1.7);
         BirdForButton.setPosition(1150, 570);
@@ -958,7 +957,7 @@ struct credits
     Font font;
     Text text[7];
     Clock wingTimer;
-    int currBird = 0, Colour = 10;
+    short int currBird = 0, Colour = 10;
     RectangleShape black;
     Sprite birds[7];
 
@@ -1411,42 +1410,6 @@ struct Gamemodes
     }
 } Mode;
 
-struct Game
-{
-    void Flappy_Bird() // Call Me
-    {
-        switch (currentGameState)
-        {
-        case MainMenu:
-            menu.draw();
-            break;
-        case eTTP:
-            Mode.TTPlay();
-            break;
-        case eGame:
-            Mode.Playing();
-            break;
-        case eDifficulty:
-            level.draw();
-            break;
-        case Credits:
-            credits.draw();
-            break;
-        case eThemes:
-            Themes.draw();
-            break;
-        case BirdThemes:
-            Birds.drawBirdThemes();
-            break;
-        case GameOver:
-            Mode.Collided();
-            break;
-        default:
-            break;
-        }
-    }
-} Game;
-
 
 int main()
 {
@@ -1497,7 +1460,33 @@ void draw()
 
     window.clear();
     Themes.Draw();
-    Game.Flappy_Bird();
+    switch (currentGameState)
+    {
+    case MainMenu:
+        menu.draw();
+        break;
+    case eTTP:
+        Mode.TTPlay();
+        break;
+    case eGame:
+        Mode.Playing();
+        break;
+    case eDifficulty:
+        level.draw();
+        break;
+    case Credits:
+        credits.draw();
+        break;
+    case eThemes:
+        Themes.draw();
+        break;
+    case BirdThemes:
+        Birds.drawBirdThemes();
+        break;
+    case GameOver:
+        Mode.Collided();
+        break;
+    }
     animation();
     window.display();
 }

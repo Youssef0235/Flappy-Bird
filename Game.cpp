@@ -11,9 +11,6 @@ using namespace sf;
 #define GAP 165 // gap between pipes
 #define DIS 1330 // distances between pipes
 #define distbet 100
-int oo = 0;
-bool press = false;
-bool th = false;
 
 
 enum GameState
@@ -28,6 +25,7 @@ enum GameState
     GameOver
 };
 
+
 GameState currentGameState = GameState::MainMenu;
 
 RenderWindow window(VideoMode(1700, 800), "Flappy Bird", Style::Default);
@@ -36,7 +34,7 @@ const float SCREEN_W = window.getSize().x;
 const float SCREEN_H = window.getSize().y;
 
 short int diff = 0, BirdTheme = 0, ChooseTheme = 0;
-bool ttp = 0, Reseting = 0;
+bool ttp = 0, Reseting = 0, press = 0, th = 0;
 float Velocity, Gravity, PipeSpeedUpNDown = 0.75;
 
 Font MainFont;
@@ -49,7 +47,6 @@ void setFonts()
     fontrate.loadFromFile("pixelmix_bold.ttf");
     MainFont.loadFromFile("pixelmix.ttf");
 }
-
 void setAssets();
 void transition();
 void draw();
@@ -527,8 +524,8 @@ struct Collision
 
     void CollisionWGround()
     {
-        if (Bird.Bird.getPosition().y <= 0)
-            Bird.Bird.setPosition(Bird.Bird.getPosition().x, 0);
+        if (Bird.Bird.getPosition().y <= 10)
+            Bird.Bird.setPosition(Bird.Bird.getPosition().x, 10);
 
         if (Bird.Bird.getGlobalBounds().intersects(Lone.TwoGrounds.getGlobalBounds()) || Bird.Bird.getGlobalBounds().intersects(Ltwo.TwoGrounds.getGlobalBounds()))
         {
@@ -549,7 +546,7 @@ struct GameOverMenu
     Sprite medal, nmedal;
     Texture medalTx[5];
 
-    bool dmed;
+    bool GetMedal;
     void Constuctor()
     {
         gameOver[0].loadFromFile("gameover.png");
@@ -564,8 +561,7 @@ struct GameOverMenu
 
         medal.setScale(0.55, 0.55);
 
-        dmed = false;
-        th = false;
+        GetMedal = false, th = 0;
 
         for (int i = 0; i < 4; i++)
         {
@@ -584,8 +580,7 @@ struct GameOverMenu
 
         over[2].setPosition(670, 1265);
         over[3].setPosition(845, 1265);
-        medal.setPosition(695, 1140); // 685, 1119
-        // 685, 1119
+        medal.setPosition(695, 1140);
     }
 
     void Transition()
@@ -612,7 +607,7 @@ struct GameOverMenu
         if (Score.Sinc > 9)
         {
             medal.setTexture(medalTx[0]);
-            dmed = true;
+            GetMedal = true;
         }
 
         if (Score.Sinc > 19)
@@ -623,7 +618,6 @@ struct GameOverMenu
 
         if (Score.Sinc > 39)
             medal.setTexture(medalTx[3]);
-
     }
 
     void Draw()
@@ -632,7 +626,7 @@ struct GameOverMenu
         {
             window.draw(over[i]);
         }
-        if (dmed)
+        if (GetMedal)
             window.draw(medal);
 
     }
@@ -729,7 +723,7 @@ struct Menu
         birdtheme.loadFromFile("birdmid3.png");
         BirdForButton.setTexture(birdtheme);
         BirdForButton.setScale(1.7, 1.7);
-        BirdForButton.setPosition(1155, 570);
+        BirdForButton.setPosition(1150, 570);
 
         darkWindow.setSize(Vector2f(SCREEN_W, SCREEN_H));
         darkWindow.setFillColor(Color(0, 0, 0, 200));
@@ -840,7 +834,7 @@ struct Themes
     {
         if (currentGameState == GameState::eThemes && !ForError)
         {
-            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 840 && Mouse::getPosition(window).x < 1258 && Mouse::getPosition(window).y > 41 && Mouse::getPosition(window).y < 327 && !press)
+            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 840 && Mouse::getPosition(window).x < 1258 && Mouse::getPosition(window).y > 41 && Mouse::getPosition(window).y < 362 && !press)
             {
                 ChooseTheme = 3;
                 ForError = 1;
@@ -851,7 +845,7 @@ struct Themes
                     currentGameState = GameState::MainMenu;
             }
 
-            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 840 && Mouse::getPosition(window).x < 1258 && Mouse::getPosition(window).y > 330 && Mouse::getPosition(window).y < 690 && !press)
+            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 840 && Mouse::getPosition(window).x < 1258 && Mouse::getPosition(window).y > 365 && Mouse::getPosition(window).y < 725 && !press)
             {
                 ChooseTheme = 2;
 
@@ -863,7 +857,7 @@ struct Themes
                     currentGameState = GameState::MainMenu;
             }
 
-            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 438 && Mouse::getPosition(window).x < 827 && Mouse::getPosition(window).y > 41 && Mouse::getPosition(window).y < 327 && !press)
+            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 438 && Mouse::getPosition(window).x < 827 && Mouse::getPosition(window).y > 41 && Mouse::getPosition(window).y < 362 && !press)
             {
                 ChooseTheme = 0;
                 ForError = 1;
@@ -874,7 +868,7 @@ struct Themes
                     currentGameState = GameState::MainMenu;
             }
 
-            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 438 && Mouse::getPosition(window).x < 827 && Mouse::getPosition(window).y > 333 && Mouse::getPosition(window).y < 688 && !press)
+            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 438 && Mouse::getPosition(window).x < 827 && Mouse::getPosition(window).y > 363 && Mouse::getPosition(window).y < 723 && !press)
             {
                 ChooseTheme = 1;
                 ForError = 1;
@@ -925,12 +919,12 @@ struct Themes
 
         theme3.loadFromFile("Shanghai.png");
         SpriteTheme3.setTexture(theme3);
-        SpriteTheme3.setPosition(Vector2f(440, 330));
+        SpriteTheme3.setPosition(Vector2f(440, 365));
         SpriteTheme3.setScale(0.7, 0.6f);
 
         theme4.loadFromFile("Tokyo.png");
         SpriteTheme4.setTexture(theme4);
-        SpriteTheme4.setPosition(Vector2f(840, 330));
+        SpriteTheme4.setPosition(Vector2f(840, 365));
         SpriteTheme4.setScale(0.7, 0.6);
 
         titleBar.setSize(Vector2f(822, 40));
@@ -964,7 +958,7 @@ struct credits
     Font font;
     Text text[7];
     Clock wingTimer;
-    int currBird = 0, Colour = 20;
+    int currBird = 0, Colour = 10;
     RectangleShape black;
     Sprite birds[7];
 
@@ -1039,7 +1033,6 @@ struct credits
                 text[i].move(0, -1);
                 birds[i].move(0, -1);
             }
-
         }
     }
 
@@ -1180,8 +1173,9 @@ struct BirdThemes
     RectangleShape ForBirds[3]; // 3 White Rectangles
     Sprite ThreeBirds[3]; // The 3 Birds
 
-    Clock BirdTimer;
-    int mm;
+    Clock BirdTimer, TinyMove;
+    short int Counter;
+    bool ToMove;
     void Constructor()
     {
         for (int i = 0; i < 3; i++)
@@ -1208,33 +1202,79 @@ struct BirdThemes
         ThreeBirds[1].setTexture(Bird.TxTwo[0]);
         ThreeBirds[2].setTexture(Bird.TxThree[0]);
 
-        ThreeBirds[0].setPosition(window.getSize().x / (3) - 120, 415);
-        ThreeBirds[1].setPosition(window.getSize().x / (3) + 275, 415);
-        ThreeBirds[2].setPosition(window.getSize().x / (3) + 675, 415);
+        ThreeBirds[0].setPosition(window.getSize().x / (3) - 124, 415);
+        ThreeBirds[1].setPosition(window.getSize().x / (3) + 276, 415);
+        ThreeBirds[2].setPosition(window.getSize().x / (3) + 676, 415);
+
+        Counter = 0, ToMove = 0;
     }
 
     void setNanimate()
     {
         if (BirdTimer.getElapsedTime().asSeconds() > 0.06)
         {
-            if (mm < 3)
-                mm++;
+            if (Counter < 3)
+                Counter++;
 
             else
-                mm = 0;
+                Counter = 0;
 
-            ThreeBirds[0].setTexture(Bird.TxOne[mm]);
-            ThreeBirds[1].setTexture(Bird.TxTwo[mm]);
-            ThreeBirds[2].setTexture(Bird.TxThree[mm]);
+            ThreeBirds[0].setTexture(Bird.TxOne[Counter]);
+            ThreeBirds[1].setTexture(Bird.TxTwo[Counter]);
+            ThreeBirds[2].setTexture(Bird.TxThree[Counter]);
             BirdTimer.restart();
         }
     }
+
+    void TinyMovement()
+    {
+        if (TinyMove.getElapsedTime().asSeconds() >= 0.1 && !ToMove)
+        {
+            for (int i = 0; i < 3; i++)
+                ThreeBirds[i].move(0, -1);
+
+            ToMove = 1;
+        }
+        if (TinyMove.getElapsedTime().asSeconds() >= 0.2 && ToMove)
+        {
+            for (int i = 0; i < 3; i++)
+                ThreeBirds[i].move(0, 1);
+
+            ToMove = 0;
+            TinyMove.restart();
+        }
+    }
+
+    void ChoosingBirdThemeGUI()
+    {
+        if (currentGameState == GameState::BirdThemes)
+        {
+            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 400 && Mouse::getPosition(window).x < 520 && Mouse::getPosition(window).y > 400 && Mouse::getPosition(window).y < 620)
+            {
+                BirdTheme = 0;
+                currentGameState = GameState::MainMenu;
+            }
+
+            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 800 && Mouse::getPosition(window).x < 920 && Mouse::getPosition(window).y > 400 && Mouse::getPosition(window).y < 620)
+            {
+                BirdTheme = 1;
+                currentGameState = GameState::MainMenu;
+            }
+
+            if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 1200 && Mouse::getPosition(window).x < 1320 && Mouse::getPosition(window).y > 400 && Mouse::getPosition(window).y < 620)
+            {
+                BirdTheme = 2;
+                currentGameState = GameState::MainMenu;
+            }
+        }
+    }
+
     void drawBirdThemes()
     {
+        Birds.TinyMovement();
         Lone.Draw();
         Ltwo.Draw();
         Birds.setNanimate();
-        //window.draw(menu.darkWindow);
         window.draw(menu.MainMenuS[5]);
         window.draw(menu.WhiteRectangles[2]);
         window.draw(menu.triangle);
@@ -1252,7 +1292,7 @@ struct ForModeControl
 {
     void ControlModeOne()
     {
-        if (currentGameState == GameState::eTTP && oo == 1 && Keyboard::isKeyPressed(Keyboard::Space))
+        if (currentGameState == GameState::eTTP && Keyboard::isKeyPressed(Keyboard::Space))
             currentGameState = GameState::eGame;
 
         if (currentGameState != GameState::MainMenu && currentGameState != GameState::eTTP)
@@ -1294,12 +1334,9 @@ struct Gamemodes
             Lone.MoveGrounds();
             Ltwo.MoveGrounds();
 
-            //window.clear();
-
             Themes.Draw();
             if (currentGameState == GameState::Credits)
             {
-                //credits.draw();
                 credits.move();
                 credits.wingMove();
             }
@@ -1309,8 +1346,6 @@ struct Gamemodes
     {
         Bird.Animate();
         Bird.UpNDown();
-
-
 
         Themes.Draw();
 
@@ -1335,7 +1370,6 @@ struct Gamemodes
         Pipes.MovePipes();
         Pipes.ResetPipesPosition();
 
-
         Score.IncScore();
 
         Bird.Draw();
@@ -1355,7 +1389,6 @@ struct Gamemodes
         Gover.Transition();
 
         Score.ForGameOver();
-
 
         Themes.Draw();
 
@@ -1473,6 +1506,7 @@ void transition()
 {
 
     Themes.ChoosingThemeGUI();
+    Birds.ChoosingBirdThemeGUI();
     Gover.GameOverGUI();
 
     if (event.type == event.MouseButtonPressed)
@@ -1539,7 +1573,6 @@ void transition()
             {
                 diff = 0;
                 currentGameState = GameState::eTTP;
-                oo = 1;
                 press = true;
             }
 
@@ -1547,14 +1580,12 @@ void transition()
             {
                 diff = 1;
                 currentGameState = GameState::eTTP;
-                oo = 1;
                 press = true;
             }
             if (mousePos.x > 736 && mousePos.x < 939 && mousePos.y > 492 && mousePos.y < 602)
             {
                 diff = 2;
                 currentGameState = GameState::eTTP;
-                oo = 1;
                 press = true;
             }
         }

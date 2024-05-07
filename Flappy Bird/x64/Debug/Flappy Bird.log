@@ -1,0 +1,117 @@
+﻿  Game.cpp
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,40): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,40): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,40): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,40): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,40): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,22): warning C4244: 'initializing': conversion from 'T' to 'const float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,22): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,22): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,22): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(31,22): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,40): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,40): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,40): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,40): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,40): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,22): warning C4244: 'initializing': conversion from 'T' to 'const float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,22): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,22): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,22): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(32,22): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,71): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,71): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,71): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,71): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,71): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,71): warning C4244:         and
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,71): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,71): warning C4244:             T=float
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,71): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,51): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,51): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,51): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,51): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,51): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,51): warning C4244:         and
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,51): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,51): warning C4244:             T=float
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(62,51): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(104,39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(160,43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(198,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(198,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(199,29): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(259,97): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(305,26): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(313,26): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(372,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(372,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(550,30): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(550,24): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(562,39): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(562,34): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(564,31): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(564,26): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(711,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(711,32): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(897,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(902,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(907,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(912,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(917,53): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(917,53): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(917,53): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(917,53): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(917,53): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(968,36): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(968,31): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1140,32): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1140,27): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1175,62): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1175,62): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1175,62): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1175,62): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1175,62): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1176,62): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1176,62): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1176,62): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1176,62): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1176,62): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1177,62): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1177,62): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1177,62): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1177,62): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1177,62): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1179,58): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1179,58): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1179,58): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1179,58): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1179,58): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1180,58): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1180,58): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1180,58): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1180,58): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1180,58): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1181,58): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1181,58): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1181,58): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1181,58): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1181,58): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1187,60): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1187,60): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1187,60): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1187,60): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1187,60): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1188,60): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1188,60): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1188,60): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1188,60): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1188,60): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1189,60): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1189,60): warning C4244:         with
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1189,60): warning C4244:         [
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1189,60): warning C4244:             T=unsigned int
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1189,60): warning C4244:         ]
+C:\Users\Pc\Desktop\Final Project\edited\Flappy Bird\Game.cpp(1381,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Flappy Bird.vcxproj -> C:\Users\Pc\Desktop\Final Project\edited\x64\Debug\Flappy Bird.exe

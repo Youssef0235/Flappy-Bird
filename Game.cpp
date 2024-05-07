@@ -24,7 +24,6 @@ enum GameState
     GameOver
 };
 
-
 GameState currentGameState = GameState::MainMenu;
 
 RenderWindow window(VideoMode(1700, 800), "Flappy Bird", Style::Default);
@@ -103,7 +102,7 @@ struct Pipes
             PiUp[i].setPosition(1700, Rand);
 
             PiDown[i].setTexture(Tex[1]);
-            PiDown[i].setPosition(1700, (PiUp[i].getPosition().y - GAP * 5) + 10);
+            PiDown[i].setPosition(1700, (PiUp[i].getPosition().y - GAP * 5) + 15);
         }
         x = 0, y = 0, a = 0, b = 0;
     }
@@ -113,67 +112,42 @@ struct Pipes
         Rand = 260 + rand() % 236;
     }
 
-    void MovePipesOne()
+    void MovePipes()
     {
         PiUp[0].move(SPEED, 0);
-        PiDown[0].move(SPEED, 0);
-    }
+        PiDown[0].move(SPEED, 0);   
 
-    void MovePipesTwo()
-    {
         if (PiUp[0].getPosition().x <= DIS)
             x = 1;
-
         if (x == 1)
         {
             PiUp[1].move(SPEED, 0);
             PiDown[1].move(SPEED, 0);
         }
-    }
 
-    void MovePipesThree()
-    {
         if (PiUp[1].getPosition().x <= DIS)
             y = 1;
-
         if (y == 1)
         {
             PiUp[2].move(SPEED, 0);
             PiDown[2].move(SPEED, 0);
-        }
-    }
+        }      
 
-    void MovePipesFour()
-    {
         if (PiUp[2].getPosition().x <= DIS)
             a = 1;
-
         if (a == 1)
         {
             PiUp[3].move(SPEED, 0);
             PiDown[3].move(SPEED, 0);
-        }
-    }
+        }     
 
-    void MovePipesFive()
-    {
         if (PiUp[3].getPosition().x <= DIS)
             b = 1;
-
         if (b == 1)
         {
             PiUp[4].move(SPEED, 0);
             PiDown[4].move(SPEED, 0);
         }
-    }
-
-    void MovePipes()
-    {
-        MovePipesOne();
-        MovePipesTwo();
-        MovePipesThree();
-        MovePipesFour();
-        MovePipesFive();
     }
 
     void ResetPipesPosition()
@@ -184,7 +158,7 @@ struct Pipes
             if (PiUp[i].getPosition().x <= -112)
             {
                 PiUp[i].setPosition(1700, Rand);
-                PiDown[i].setPosition(1700, (PiUp[i].getPosition().y - GAP * 5) + 10);
+                PiDown[i].setPosition(1700, (PiUp[i].getPosition().y - GAP * 5) + 15);
             }
         }
     }
@@ -546,6 +520,7 @@ struct GameOverMenu
     Texture medalTx[5];
 
     bool GetMedal;
+
     void Constuctor()
     {
         gameOver[0].loadFromFile("gameover.png");
@@ -560,7 +535,7 @@ struct GameOverMenu
 
         medal.setScale(0.55, 0.55);
 
-        GetMedal = false, th = 0;
+        GetMedal = 0, th = 0;
 
         for (int i = 0; i < 4; i++)
         {
@@ -627,7 +602,6 @@ struct GameOverMenu
         }
         if (GetMedal)
             window.draw(medal);
-
     }
 
     void GameOverGUI()
@@ -814,7 +788,7 @@ struct Themes
 {
     Sprite themes;
     Texture Textures[4];
-    bool ForError;
+
     void Constructor()
     {
         Textures[0].loadFromFile("Classic.png");
@@ -825,18 +799,15 @@ struct Themes
         themes.setTexture(Textures[0]);
         themes.setScale(2.85, 1.5);
         themes.setPosition(0, -100);
-
-        ForError = 0;
     }
 
     void ChoosingThemeGUI()
     {
-        if (currentGameState == GameState::eThemes && !ForError)
+        if (currentGameState == GameState::eThemes )
         {
             if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 840 && Mouse::getPosition(window).x < 1258 && Mouse::getPosition(window).y > 41 && Mouse::getPosition(window).y < 362 && !press)
             {
                 ChooseTheme = 3;
-                ForError = 1;
                 press = true;
                 if (th)
                     currentGameState = GameState::eTTP;
@@ -848,7 +819,6 @@ struct Themes
             {
                 ChooseTheme = 2;
 
-                ForError = 1;
                 press = true;
                 if (th)
                     currentGameState = GameState::eTTP;
@@ -859,7 +829,6 @@ struct Themes
             if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 438 && Mouse::getPosition(window).x < 827 && Mouse::getPosition(window).y > 41 && Mouse::getPosition(window).y < 362 && !press)
             {
                 ChooseTheme = 0;
-                ForError = 1;
                 press = true;
                 if (th)
                     currentGameState = GameState::eTTP;
@@ -870,7 +839,6 @@ struct Themes
             if (Mouse::isButtonPressed(Mouse::Left) && Mouse::getPosition(window).x > 438 && Mouse::getPosition(window).x < 827 && Mouse::getPosition(window).y > 363 && Mouse::getPosition(window).y < 723 && !press)
             {
                 ChooseTheme = 1;
-                ForError = 1;
                 press = true;
                 if (th)
                     currentGameState = GameState::eTTP;
@@ -1152,7 +1120,6 @@ struct TapToPlayMenu
 
         Textures[1].loadFromFile("getready.png");
         Stuff[1].setTexture(Textures[1]);
-        Stuff[1].setScale(1.1, 1.1);
         Stuff[1].setPosition(740, 100);
         Stuff[1].setScale(1.3, 1.3);
     }
@@ -1171,10 +1138,10 @@ struct BirdThemes
     Sprite ForBirdTheme[3]; // 3 Rate Buttons
     RectangleShape ForBirds[3]; // 3 White Rectangles
     Sprite ThreeBirds[3]; // The 3 Birds
-
     Clock BirdTimer, TinyMove;
     short int Counter;
     bool ToMove;
+
     void Constructor()
     {
         for (int i = 0; i < 3; i++)
@@ -1208,7 +1175,7 @@ struct BirdThemes
         Counter = 0, ToMove = 0;
     }
 
-    void setNanimate()
+    void BTanimate()
     {
         if (BirdTimer.getElapsedTime().asSeconds() > 0.06)
         {
@@ -1273,7 +1240,7 @@ struct BirdThemes
         Birds.TinyMovement();
         Lone.Draw();
         Ltwo.Draw();
-        Birds.setNanimate();
+        Birds.BTanimate();
         window.draw(menu.MainMenuS[5]);
         window.draw(menu.WhiteRectangles[2]);
         window.draw(menu.triangle);
@@ -1289,7 +1256,7 @@ struct BirdThemes
 
 struct ForModeControl
 {
-    void ControlModeOne()
+    void ControlSwitching()
     {
         if (currentGameState == GameState::eTTP && Keyboard::isKeyPressed(Keyboard::Space))
             currentGameState = GameState::eGame;
@@ -1326,27 +1293,10 @@ struct ForModeControl
 
 struct Gamemodes
 {
-    void MainMenu()
-    {
-        if (currentGameState != GameState::eGame)
-        {
-            Lone.MoveGrounds();
-            Ltwo.MoveGrounds();
-
-            Themes.Draw();
-            if (currentGameState == GameState::Credits)
-            {
-                credits.move();
-                credits.wingMove();
-            }
-        }
-    }
     void TTPlay()
     {
         Bird.Animate();
         Bird.UpNDown();
-
-        Themes.Draw();
 
         Tmenu.Draw();
 
@@ -1354,11 +1304,9 @@ struct Gamemodes
 
         Lone.Draw();
         Ltwo.Draw();
-
     }
     void Playing()
     {
-        Collide.CollisionWGround();
         Collide.CollisionWGround();
         Collide.CollisionWPipes(Pipes.PiUp);
         Collide.CollisionWPipes(Pipes.PiDown);
@@ -1418,20 +1366,22 @@ int main()
     window.setFramerateLimit(60);
     setAssets();
     Birds.Constructor();
+
     while (window.isOpen())
     {
         while (window.pollEvent(event))
         {
             if (event.type == Event::Closed)
                 window.close();
-            transition();
+                transition();
+
             if (currentGameState == GameState::eGame || currentGameState == GameState::eTTP)
                 Bird.GUI();
         }
         if (currentGameState == GameState::eGame)
             Difficulty.DifficultySettings();
 
-        Control.ControlModeOne();
+        Control.ControlSwitching();
         Control.Reset();
         Score.hsSetup();
         draw();
@@ -1493,7 +1443,6 @@ void draw()
 
 void transition()
 {
-
     Themes.ChoosingThemeGUI();
     Birds.ChoosingBirdThemeGUI();
     Gover.GameOverGUI();
@@ -1600,7 +1549,6 @@ void transition()
 
 void animation() // for credits
 {
-
     if (currentGameState == GameState::Credits)
     {
         Bird.Animate();

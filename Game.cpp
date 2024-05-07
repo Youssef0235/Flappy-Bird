@@ -945,7 +945,7 @@ struct credits
         for (int i = 0; i < 7; i++)
         {
             birds[i] = Bird.Bird;
-            birds[i].setTexture(Bird.TxOne[0]);
+            birds[i].setTexture(Bird.TxThree[0]);
             birds[i].setOrigin(birds[0].getGlobalBounds().width / 2, text[i].getGlobalBounds().height / 2);
             birds[i].setScale(1.3, 1.3);
         }
@@ -1007,7 +1007,7 @@ struct credits
         {
             currBird = (currBird + 1) % 3;
             for (int i = 0; i < 7; i++)
-                birds[i].setTexture(Bird.TxOne[currBird]);
+                birds[i].setTexture(Bird.TxThree[currBird]);
 
             wingTimer.restart();
         }
@@ -1364,7 +1364,7 @@ int main()
     window.setPosition(Vector2i(100, 50));
     window.setFramerateLimit(60);
     setAssets();
-    //Birds.Constructor();
+    Birds.Constructor();
 
     while (window.isOpen())
     {

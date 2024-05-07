@@ -48,7 +48,7 @@ void setFonts()
 void setAssets();
 void transition();
 void draw();
-void animation();
+void AnimateCredits();
 
 
 struct Flash
@@ -348,7 +348,7 @@ struct Scoring
     SoundBuffer ScoInc;
     Sound ScoreSound;
     int Sinc, EasyHigh = 0, MediumHigh = 0, HardHigh = 0;
-    bool Inc, MoveScoreUp;
+    bool MoveScoreUp;
 
     void Constructor(int x, int y, int size)
     {
@@ -366,7 +366,7 @@ struct Scoring
         ScoInc.loadFromFile("Score.wav");
         ScoreSound.setBuffer(ScoInc);
 
-        Inc = 0, MoveScoreUp = 0, Sinc = 0;
+        MoveScoreUp = 0, Sinc = 0;
     }
 
     void hsSetup()
@@ -517,7 +517,7 @@ struct GameOverMenu
     Texture gameOver[4];
     Sprite over[4];
     Sprite medal, nmedal;
-    Texture medalTx[5];
+    Texture medalTx[4];
 
     bool GetMedal;
 
@@ -628,7 +628,6 @@ struct GameOverMenu
 struct Difficulty
 {
     Clock PipeTimer;
-    bool ForPipeTimer;
 
     void DifficultySettings()
     {
@@ -681,9 +680,9 @@ struct Difficulty
 
 struct Menu
 {
-    Sprite MainMenuS[8];
-    RectangleShape WhiteRectangles[5];
-    Texture MainMenuT[5];
+    Sprite MainMenuS[6];
+    RectangleShape WhiteRectangles[3];
+    Texture MainMenuT[4];
     RectangleShape darkWindow;
     Text textrate;
     Vector2u windowSize = window.getSize();
@@ -932,9 +931,8 @@ struct credits
     void set()
     {
         font.loadFromFile("JANDAMANATEESOLID.ttf");
-        RectangleShape _b(Vector2f(SCREEN_W, SCREEN_H));
-        _b.setFillColor(Color(0, 0, 0, 150));
-        black = _b;
+        black.setSize(Vector2f(SCREEN_W, SCREEN_H));
+        black.setFillColor(Color(0, 0, 0, 150));
 
         for (int i = 0; i < 7; i++)
         {
@@ -1261,6 +1259,7 @@ struct ForModeControl
         if (currentGameState == GameState::eTTP && Keyboard::isKeyPressed(Keyboard::Space))
             currentGameState = GameState::eGame;
 
+        
         if (currentGameState != GameState::MainMenu && currentGameState != GameState::eTTP)
             Reseting = 0;
     }
@@ -1365,7 +1364,7 @@ int main()
     window.setPosition(Vector2i(100, 50));
     window.setFramerateLimit(60);
     setAssets();
-    Birds.Constructor();
+    //Birds.Constructor();
 
     while (window.isOpen())
     {
@@ -1437,7 +1436,7 @@ void draw()
         Mode.Collided();
         break;
     }
-    animation();
+    AnimateCredits();
     window.display();
 }
 
@@ -1547,11 +1546,10 @@ void transition()
     }
 }
 
-void animation() // for credits
+void AnimateCredits() // for credits
 {
     if (currentGameState == GameState::Credits)
     {
-        Bird.Animate();
         credits.move();
         credits.wingMove();
     }
